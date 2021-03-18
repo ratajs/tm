@@ -281,7 +281,7 @@ main(int argc, char** argv)
 	size_t size = 0;
 	char *line = NULL;
 
-	while ((c = getopt(argc, argv, "hqt")) != -1) switch (c) {
+	while ((c = getopt(argc, argv, "qtT")) != -1) switch (c) {
 		case 'q':
 			qflag = 1;
 			break;
@@ -290,6 +290,7 @@ main(int argc, char** argv)
 			break;
 		case 'T':
 			Tflag = 1;
+			tflag = 1;
 			break;
 		default:
 			usage();

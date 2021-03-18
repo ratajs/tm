@@ -1,0 +1,5 @@
+mind the edges of the tape
+	#define LEOTAPE(m)      (((m)->head) == ((m)->tape))
+	#define REOTAPE(m)      (((m)->head) == ((m)->tape) + ((m)->tlen - 1))
+
+support comments in the instruction set

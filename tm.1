@@ -1,0 +1,102 @@
+.Dd March 18, 2021
+.Dt TM 1
+.Os
+.Sh NAME
+.Nm tm
+.Nd run Turing machines
+.Sh SYNOPSIS
+.Nm
+.Op Fl qtT
+.Ar machine
+.Sh DESCRIPTION
+.Nm
+runs the Turing machine described in a
+.Ar machine
+file consisting of lines in the form
+.Ic srwmt ,
+where
+.Ic s
+and
+.Ic t
+are machine states,
+.Ic r
+and
+.Ic w
+are tape symbols, and
+.Ic m
+is a move
+.Po
+.Sq L
+for left,
+.Sq R
+for rigt
+.Pc .
+The tape symbols and state names must be chars recognized by
+.Xr isalnum 3 .
+Every line describes an instruction:
+in a state
+.Ic s ,
+if you read
+.Ic r
+on the tape, write
+.Ic w
+to the tape,
+move left or right as per
+.Ic m ,
+and change your state to
+.Ic t .
+Initially, the machine is in the
+.Ic s
+state of the first instruction.
+The machine is required to be deterministic,
+i.e. there can only be one instruction for every
+.Ic sr
+combination.
+The machine halts if there is no instruction for the current
+.Ic s
+state and
+.Ic r
+input.
+.Pp
+The machine operates on a tape described by a line of stdin.
+The line must cointain alphanumeric characters exclusively.
+The machine head initially points to the first
+.Sq 1
+if one occurs in the line;
+otherwise, the head points to the first symbol of the line.
+If and when the machine halts,
+.Nm
+prints the eventual content of the tape,
+and starts another computation using the next line.
+.Pp
+The options are as follows:
+.Pp
+.Bl -tag -width xx -compact
+.It Fl q
+Do not print the content of the tape upon halting.
+.It Fl t
+Display the tape before every step of the machine.
+.It Fl T
+Like
+.Fl t ,
+with the head position indicated in bold.
+.El
+.Sh EXAMPLES
+The following machine computes the successor function
+when using the tally notation to represent natural numbers on tape:
+.Pp
+.Dl $ cat succ.tm
+.Dl A11RA
+.Dl A01LB
+.Dl B11LB
+.Dl B00RC
+.Dl $ cat << EOF | tm succ.tm
+.Dl > 0010000
+.Dl > 0011000
+.Dl > 0011100
+.Dl > EOF
+.Dl 0011000
+.Dl 0011100
+.Dl 0011110
+.Sh AUTHORS
+.An Jan Stary Aq Mt hans@stare.cz

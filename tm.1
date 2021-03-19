@@ -97,23 +97,34 @@ with the head position and state indicated.
 The following machine computes the successor function
 when using the tally notation to represent natural numbers on tape:
 .Pp
-.Dl $ cat succ.tm
 .Dl A11RA
 .Dl A01LB
 .Dl B11LB
 .Dl B00RC
-.Dl $ cat << EOF | tm succ.tm
-.Dl > 0010000
-.Dl > 0011000
-.Dl > 0011100
-.Dl > EOF
-.Dl 0011000
-.Dl 0011100
-.Dl 0011110
 .Pp
-Add two numbers and add one, as in (3+2)+1:
+The following machines copies its input to the right:
 .Pp
-.Dl $ echo 001111011100 | tm add.tm | tm succ.tm
-.Dl 000011111110
+.Dl A11LA
+.Dl A00LB
+.Dl B01RC
+.Dl C00RC
+.Dl C10RD
+.Dl D11RD
+.Dl D00RE
+.Dl E11RE
+.Dl E01LF
+.Dl F11LF
+.Dl F00LG
+.Dl G11LH
+.Dl G01LI
+.Dl H11LH
+.Dl H00RC
+.Dl I01LI
+.Dl I10RJ
+.Dl J10RK
+.Pp
+.Dl $ echo 000111000000 | tm    copy.tm
+.Dl $ echo 000111000000 | tm -T copy.tm | less
+.Dl $ echo 000111000000 | tm -T copy.tm | a2ps
 .Sh AUTHORS
 .An Jan Stary Aq Mt hans@stare.cz

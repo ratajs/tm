@@ -143,10 +143,10 @@ prtape(struct tm *tm)
 		return;
 	if (Tflag) {
 		for (c = tm->tape; c && *c; c++) {
+			putchar(*c);
 			if (c == tm->head) {
-				printf("\033[1m%c\033[22m", *c);
-			} else {
-				putchar(*c);
+				/* make the head bold */
+				printf("%c%c", 0x08, *c);
 			}
 		}
 		printf(" %c\n", tm->s->s);

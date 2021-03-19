@@ -1,4 +1,4 @@
-.Dd March 18, 2021
+.Dd March 19, 2021
 .Dt TM 1
 .Os
 .Sh NAME
@@ -66,7 +66,8 @@ if one occurs in the line;
 otherwise, the head points to the first symbol of the line.
 If and when the machine halts,
 .Nm
-prints the eventual content of the tape,
+prints the eventual content of the tape
+(which means computations can be easily piped),
 and starts another computation using the next line.
 .Pp
 The options are as follows:
@@ -98,5 +99,10 @@ when using the tally notation to represent natural numbers on tape:
 .Dl 0011000
 .Dl 0011100
 .Dl 0011110
+.Pp
+Add two numbers and add one, as in (3+2)+1:
+.Pp
+.Dl $ echo 001111011100 | tm add.tm | tm succ.tm
+.Dl 000011111110
 .Sh AUTHORS
 .An Jan Stary Aq Mt hans@stare.cz

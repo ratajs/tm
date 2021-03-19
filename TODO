@@ -6,3 +6,6 @@ support comments in the instruction set
 
 The mult.tm machine only multiplies by zero.
 Employ the copy machine to do non-zero products.
+
+Run more than one machine with 'tm M1.tm M2.tm':
+after M1 halts, start M1 on the current tape.

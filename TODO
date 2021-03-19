@@ -11,3 +11,6 @@ Run more than one machine with 'tm M1.tm M2.tm':
 after M1 halts, start M1 on the current tape.
 
 Allow ' ' on tape?
+
+If stdout isatty(3), use th \[2 for bold;
+otherwise use the backspace

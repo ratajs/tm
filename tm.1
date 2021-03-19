@@ -6,6 +6,7 @@
 .Nd run Turing machines
 .Sh SYNOPSIS
 .Nm
+.Op Fl b Ar blank
 .Op Fl qtT
 .Ar machine
 .Sh DESCRIPTION
@@ -59,20 +60,30 @@ state and
 input.
 .Pp
 The machine operates on a tape described by a line of stdin.
-The line must cointain alphanumeric characters exclusively.
+The line may only contain alphanumeric characters.
+By default,
+.Sq 0
+is considered the blank symbol.
 The machine head initially points to the first
-.Sq 1
-if one occurs in the line;
-otherwise, the head points to the first symbol of the line.
+non-blank symbol on the tape, if any.
+Otherwise, the head points to the first symbol.
 If and when the machine halts,
 .Nm
 prints the eventual content of the tape
-(which means computations can be easily piped),
-and starts another computation using the next line.
+(which means computations can be easily piped).
+.Pp
+If there are more input lines (tapes),
+another computation starts as above,
+until the input is exhausted.
 .Pp
 The options are as follows:
 .Pp
-.Bl -tag -width xx -compact
+.Bl -tag -width xxxx -compact
+.It Fl b Ar X
+Let the blank symbol be
+.Sq X
+instead of the default
+.Sq 0 .
 .It Fl q
 Do not print the content of the tape upon halting.
 .It Fl t

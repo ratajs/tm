@@ -6,14 +6,15 @@
 #include <err.h>
 #include "tm.h"
 
-int qflag = 0;
-int tflag = 0;
-int Tflag = 0;
+char	blank = '0';
+int	qflag = 0;
+int	tflag = 0;
+int	Tflag = 0;
 
 static void
 usage()
 {
-	fprintf(stderr, "usage: tm [-qtT] machine\n");
+	fprintf(stderr, "usage: tm [-b blank] [-qtT] machine\n");
 }
 
 struct inst*
@@ -177,8 +178,8 @@ mktape(struct tm *tm, char* line)
 			warnx("'%c' is not a valid tape symbol", *c);
 			return -1;
 		}
-		if ((*c == '1') && (h == NULL)) {
-			/* point the head to the first 1 */
+		if ((*c != blank) && (h == NULL)) {
+			/* the first non-blank */
 			h = c;
 		}
 	}
@@ -284,7 +285,12 @@ main(int argc, char** argv)
 	size_t size = 0;
 	char *line = NULL;
 
-	while ((c = getopt(argc, argv, "qtT")) != -1) switch (c) {
+	while ((c = getopt(argc, argv, "b:qtT")) != -1) switch (c) {
+		case 'b':
+			if (!isalnum(blank = *optarg)) {
+				warnx("'%c' is not a valid blank", blank);
+			}
+			break;
 		case 'q':
 			qflag = 1;
 			break;

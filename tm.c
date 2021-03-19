@@ -289,6 +289,7 @@ main(int argc, char** argv)
 		case 'b':
 			if (!isalnum(blank = *optarg)) {
 				warnx("'%c' is not a valid blank", blank);
+				return -1;
 			}
 			break;
 		case 'q':

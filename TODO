@@ -9,3 +9,8 @@ Employ the copy machine to do non-zero products.
 
 Run more than one machine with 'tm M1.tm M2.tm':
 after M1 halts, start M1 on the current tape.
+
+-b X specifies a blank, 0 by default.
+Position the head on the first non-blank.
+
+Allow ' ' on tape?

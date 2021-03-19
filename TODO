@@ -2,7 +2,8 @@ mind the edges of the tape
 	#define LEOTAPE(m)      (((m)->head) == ((m)->tape))
 	#define REOTAPE(m)      (((m)->head) == ((m)->tape) + ((m)->tlen - 1))
 
-support comments in the instruction set
+support comments in the inst: A11RA % walk over the ones
+support comments on the tape: 001111011100 % 3 and 2
 
 The mult.tm machine only multiplies by zero.
 Employ the copy machine to do non-zero products.

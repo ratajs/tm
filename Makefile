@@ -6,6 +6,7 @@ CFLAGS	= -Wall -pedantic
 tm: tm.c tm.h
 
 test: tm
+	./tm add.tm  < add.in  | diff - add.out
 	./tm succ.tm < succ.in | diff - succ.out
 	./tm copy.tm < copy.in | diff - copy.out
 	./tm mult.tm < mult.in | diff - mult.out

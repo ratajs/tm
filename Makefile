@@ -6,11 +6,12 @@ CFLAGS	= -Wall -pedantic
 tm: tm.c tm.h
 
 test: tm
-	./tm add.tm  < add.in  | diff - add.out
-	./tm sign.tm < sign.in | diff - sign.out
-	./tm succ.tm < succ.in | diff - succ.out
-	./tm copy.tm < copy.in | diff - copy.out
-	./tm mult.tm < mult.in | diff - mult.out
+	./tm add.tm   < add.in   | diff - add.out
+	./tm sign.tm  < sign.in  | diff - sign.out
+	./tm succ.tm  < succ.in  | diff - succ.out
+	./tm copy.tm  < copy.in  | diff - copy.out
+	./tm mult.tm  < mult.in  | diff - mult.out
+	./tm empty.tm < empty.in | diff - empty.out
 
 lint: tm.1
 	mandoc -Tlint -Wstyle tm.1

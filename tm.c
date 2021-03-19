@@ -149,7 +149,11 @@ prtape(struct tm *tm)
 				printf("%c%c", 0x08, *c);
 			}
 		}
-		printf(" %c\n", tm->s->s);
+		if (tm->s) {
+			/* beware the empty machine */
+			printf(" %c", tm->s->s);
+		}
+		putchar('\n');
 	} else {
 		printf("%s\n", tm->tape);
 	}
@@ -256,10 +260,13 @@ int
 run(struct tm *tm)
 {
 	struct inst *i;
+	if (tm == NULL)
+		return -1;
 	do {
 		if (tflag)
 			prtape(tm);
-		if ((i = getinst(tm->s->inst, *tm->head)) == NULL) {
+		if (tm->s == NULL
+		|| ((i = getinst(tm->s->inst, *tm->head)) == NULL)) {
 			/* halt */
 			break;
 		}

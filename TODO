@@ -3,3 +3,6 @@ mind the edges of the tape
 	#define REOTAPE(m)      (((m)->head) == ((m)->tape) + ((m)->tlen - 1))
 
 support comments in the instruction set
+
+The mult.tm machine only multiplies by zero.
+Employ the copy machine to do non-zero products.

@@ -8,6 +8,7 @@ tm: tm.c tm.h
 test: tm
 	./tm succ.tm < succ.in | diff - succ.out
 	./tm copy.tm < copy.in | diff - copy.out
+	./tm mult.tm < mult.in | diff - mult.out
 
 lint: tm.1
 	mandoc -Tlint -Wstyle tm.1

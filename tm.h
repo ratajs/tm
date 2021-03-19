@@ -1,4 +1,4 @@
-#define ISMOVE(_m) ((_m == 'L') || (_m == 'R'))
+#define ISMOVE(_m) ((_m == 'L') || (_m == 'N') || (_m == 'R'))
 
 struct inst {
 	char		r;

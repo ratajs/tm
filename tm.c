@@ -262,9 +262,13 @@ run(struct tm *tm)
 			/* halt */
 			break;
 		}
-		*tm->head = i->w;
-		tm->head += i->m == 'L' ? -1 : +1;
 		tm->s = i->t;
+		*tm->head = i->w;
+		if (i->m == 'L') {
+			tm->head--;
+		} else if (i->m == 'R') {
+			tm->head++;
+		}
 	} while (1);
 	if (!tflag && !qflag)
 		prtape(tm);

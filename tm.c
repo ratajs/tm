@@ -148,7 +148,7 @@ prtape(struct tm *tm)
 				putchar(*c);
 			}
 		}
-		putchar('\n');
+		printf(" %c\n", tm->s->s);
 	} else {
 		printf("%s\n", tm->tape);
 	}
@@ -252,8 +252,7 @@ reset(struct tm* tm)
 }
 
 int
-run
-(struct tm *tm)
+run(struct tm *tm)
 {
 	struct inst *i;
 	do {

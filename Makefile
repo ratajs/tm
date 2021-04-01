@@ -10,6 +10,7 @@ test: tm
 	./tm max.tm   < max.in   | diff - max.out
 	./tm sign.tm  < sign.in  | diff - sign.out
 	./tm succ.tm  < succ.in  | diff - succ.out
+	./tm proj.tm  < proj.in  | diff - proj.out
 	./tm copy.tm  < copy.in  | diff - copy.out
 	./tm mult.tm  < mult.in  | diff - mult.out
 	./tm empty.tm < empty.in | diff - empty.out

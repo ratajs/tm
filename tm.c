@@ -192,7 +192,7 @@ mktape(struct tm *tm, char* line)
 		}
 	}
 	tm->tape = strdup(line);
-	tm->head = h ? tm->tape + (h - line) : tm->tape;
+	tm->head = h ? tm->tape + (h - line) : tm->tape + len/2;
 	tm->tlen = len;
 	return len;
 }

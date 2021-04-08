@@ -66,9 +66,9 @@ The line may only contain alphanumeric characters.
 By default,
 .Sq 0
 is considered the blank symbol.
-The machine head initially points to the first
-non-blank symbol on the tape, if any.
-Otherwise, the head points to the first symbol.
+The machine head is initially positioned at
+the first non-blank symbol on the tape, if any.
+Otherwise, the head is positioned in the middle of the tape.
 If and when the machine halts,
 .Nm
 prints the eventual content of the tape

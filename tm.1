@@ -1,4 +1,4 @@
-.Dd March 19, 2021
+.Dd April 8, 2021
 .Dt TM 1
 .Os
 .Sh NAME
@@ -96,17 +96,17 @@ Like
 with the head position and state indicated.
 .El
 .Sh EXAMPLES
-The following machine computes the successor function
-when using the tally notation to represent natural numbers on tape:
+The following machine is the winner of the Busy Beaver competiton
+for machines with two active states.
 .Pp
-.Dl A11RA
-.Dl A01LB
-.Dl B11LB
-.Dl B00RH
+.Dl A01RB
+.Dl A11LB
+.Dl B01LA
+.Dl B11RH
 .Pp
-.Dl $ echo 000111000000 | tm    succ.tm
-.Dl $ echo 000111000000 | tm -T succ.tm
-.Dl $ echo 000111000000 | tm -T succ.tm | less
-.Dl $ echo 000111000000 | tm -T succ.tm | a2ps
+.Dl $ echo 000000 | tm    bb2.tm
+.Dl $ echo 000000 | tm -T bb2.tm
+.Dl $ echo 000000 | tm -T bb2.tm | less
+.Dl $ echo 000000 | tm -T bb2.tm | a2ps
 .Sh AUTHORS
 .An Jan Stary Aq Mt hans@stare.cz

@@ -22,7 +22,7 @@ lint: tm.1
 
 install: test tm.1
 	install -d -m 755 $(BINDIR) && install -m 755 tm   $(BINDIR)
-	install -d -m 755 $(MANDIR) && install -m 755 tm.1 $(MANDIR)
+	install -d -m 755 $(MANDIR) && install -m 644 tm.1 $(MANDIR)
 
 uninstall:
 	rm -f $(BINDIR)/tm

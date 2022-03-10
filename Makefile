@@ -14,6 +14,7 @@ test: tm
 	./tm copy.tm  < copy.in  | diff - copy.out
 	./tm mult.tm  < mult.in  | diff - mult.out
 	./tm empty.tm < empty.in | diff - empty.out
+	./tm table.tm < table.in | diff - table.out
 	./tm bb1.tm   < bb1.in   | diff - bb1.out
 	./tm bb2.tm   < bb2.in   | diff - bb2.out
 

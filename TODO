@@ -22,3 +22,9 @@ tm -b (busy beaver)
 
 tm -p (projection)
 	generate the projection machine (pi_i^k)
+
+tm -n (numbers)
+	produce the number tape, as in tm -n 3,2 => 0111101110
+
+tm -N (numbers)
+	interpret the number tape, as in 0111101110 => 3 2

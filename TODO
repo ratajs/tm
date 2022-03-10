@@ -32,3 +32,6 @@ tm -N (numbers)
 tm -r (resources)
 	after halting (or upon receivinf SIGINFO)
 	report the number of steps taken and memory (tape) used
+
+tm -s (steps)
+	Halt after this many steps

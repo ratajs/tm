@@ -3,6 +3,8 @@ BINDIR	= $(PREFIX)/bin
 MANDIR	= $(PREFIX)/man/man1
 CFLAGS	= -Wall -pedantic
 
+all: tm
+
 tm: tm.c tm.h
 
 test: tm

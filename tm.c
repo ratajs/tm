@@ -164,9 +164,9 @@ prtape(struct tm *tm)
 		
 }
 
-/* Given an input line, prepare the machine's tape.
- * Point the head to the first 1 (it there is one).
- * Return length for success, 0 for empty line, -1 for error. */
+/* Given an input line, prepare the tape.
+ * Point the head to the last-noblank (if any).
+ * Return tape length for success, 0 for empty line, -1 for error. */
 int
 mktape(struct tm *tm, char* line)
 {
@@ -186,10 +186,8 @@ mktape(struct tm *tm, char* line)
 			warnx("'%c' is not a valid tape symbol", *c);
 			return -1;
 		}
-		if ((*c != blank) && (h == NULL)) {
-			/* the first non-blank */
+		if (*c != blank)
 			h = c;
-		}
 	}
 	tm->tape = strdup(line);
 	tm->head = h ? tm->tape + (h - line) : tm->tape + len/2;

@@ -294,6 +294,39 @@ reset(struct tm* tm)
 	tm->tlen = 0;
 }
 
+/* Check if a move would take us past the end of the tape.
+ * If so, double the tape size in that direction,
+ * keep the tape content and reposition. */
+void
+chktape(struct tm *tm, char m)
+{
+	char *newt;
+	size_t newl;
+	size_t off;
+	if (tm == NULL || tm->tape == NULL)
+		return;
+	newl = 2 * tm->tlen;
+	off = tm->head - tm->tape;
+	if ((m == 'L' && off == 0)
+	||  (m == 'R' && (off == tm->tlen - 1))) {
+		if (NULL == (newt = recallocarray(tm->tape, tm->tlen, newl, 1)))
+			err(1, NULL);
+		if (m == 'R') {
+			tm->tape = newt;
+			tm->head = newt + off;
+			memset(tm->head + 1, '0', tm->tlen);
+			tm->tlen = newl;
+		} else {
+			memcpy(newt + tm->tlen, newt, tm->tlen);
+			memset(newt, '0', tm->tlen);
+			tm->head = newt + tm->tlen;
+			tm->tape = newt;
+			tm->tlen = newl;
+		}
+	}
+	return;
+}
+
 int
 run(struct tm *tm)
 {
@@ -310,6 +343,7 @@ run(struct tm *tm)
 		}
 		tm->s = i->t;
 		*tm->head = i->w;
+		chktape(tm, i->m);
 		if (i->m == 'L') {
 			tm->head--;
 		} else if (i->m == 'R') {

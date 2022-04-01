@@ -81,6 +81,22 @@ mkstat(char S)
 	return s;
 }
 
+void
+frstat(struct state *s)
+{
+	struct inst* i;
+	struct inst* n;
+	if (s) {
+		i = s->inst;
+		while (i) {
+			n = i->next;
+			free(i);
+			i = n;
+		}
+		free(s);
+	}
+}
+
 struct state*
 getstat(struct state *list, char S)
 {
@@ -205,6 +221,23 @@ prtm(struct tm *tm)
 		prstat(s);
 }
 
+void
+freetm(struct tm* tm)
+{
+	struct state *s;
+	struct state *n;
+	if (tm) {
+		s = tm->list;
+		while (s) {
+			n = s->next;
+			frstat(s);
+			s = n;
+		}
+		free(tm->tape);
+		free(tm);
+	}
+}
+
 struct tm*
 mktm(const char* file)
 {
@@ -245,7 +278,7 @@ mktm(const char* file)
 	fclose(f);
 	return tm;
 bad:
-	free(tm);
+	freetm(tm);
 	fclose(f);
 	return NULL;
 }
@@ -255,8 +288,9 @@ reset(struct tm* tm)
 {
 	if (tm == NULL)
 		return;
-	tm->s = tm->list;
 	free(tm->tape);
+	tm->s = tm->list;
+	tm->tape = NULL;
 	tm->tlen = 0;
 }
 

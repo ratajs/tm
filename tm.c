@@ -165,7 +165,7 @@ prtape(struct tm *tm)
 }
 
 /* Given an input line, prepare the tape.
- * Point the head to the last-noblank (if any).
+ * Point the head to the last non-blank (if any).
  * Return tape length for success, 0 for empty line, -1 for error. */
 int
 mktape(struct tm *tm, char* line)
@@ -242,9 +242,11 @@ mktm(const char* file)
 		}
 	}
 	tm->s = tm->list;
+	fclose(f);
 	return tm;
 bad:
 	free(tm);
+	fclose(f);
 	return NULL;
 }
 

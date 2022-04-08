@@ -4,6 +4,7 @@ MANDIR	= $(PREFIX)/man/man1
 CFLAGS	= -Wall -pedantic
 
 tm: tm.c tm.h
+	$(CC) $(CFLAGS) -o tm tm.c
 
 test: tm
 	#./tm add.tm   < add.in   | diff - add.out

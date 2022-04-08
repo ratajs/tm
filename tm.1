@@ -34,8 +34,7 @@ for right,
 .Sq N
 for nothing
 .Pc .
-The tape symbols and state names must be chars recognized by
-.Xr isalnum 3 .
+The tape symbols and state names must be alphanumeric characters.
 Every line describes an instruction:
 in a state
 .Ic s ,
@@ -61,13 +60,13 @@ state and
 .Ic r
 input.
 .Pp
-The machine operates on a tape described by a line of stdin.
+The initial tape content is given by a line of standard input.
 The line may only contain alphanumeric characters.
 By default,
 .Sq 0
 is considered the blank symbol.
 The machine head is initially positioned at
-the first non-blank symbol on the tape, if any.
+the last non-blank symbol on the tape, if any.
 Otherwise, the head is positioned in the middle of the tape.
 If and when the machine halts,
 .Nm
@@ -75,16 +74,16 @@ prints the eventual content of the tape
 (so computations can be easily piped).
 .Pp
 If there are more input lines (tapes),
-another computation starts as above,
+another computation of the same machine starts,
 until the input is exhausted.
 .Pp
 The options are as follows:
 .Pp
 .Bl -tag -width xxxx -compact
 .It Fl b Ar X
-Let the blank symbol be
+Consider
 .Sq X
-instead of the default
+to be the blank symbol instead of the default
 .Sq 0 .
 .It Fl q
 Do not print the content of the tape upon halting.

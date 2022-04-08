@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #define ISMOVE(_m) ((_m == 'L') || (_m == 'N') || (_m == 'R'))
 
 struct inst {

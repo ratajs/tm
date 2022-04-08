@@ -1,3 +1,6 @@
+empty tape
+	if no input is given, make up a small empty tape
+
 mind the edges of the tape
 	#define LEOTAPE(m)      (((m)->head) == ((m)->tape))
 	#define REOTAPE(m)      (((m)->head) == ((m)->tape) + ((m)->tlen - 1))
@@ -14,8 +17,12 @@ after M1 halts, start M1 on the current tape.
 Allow ' ' on tape?
 
 tm -c (concatenate machines)
-	with tm M1 M2, instead of running the two machines,
+	with tm -c M1 M2, instead of running the two machines,
 	print an instruction set of the "compound" machine
+
+tm -C (conditionals)
+	with tm -C M1 M2 M3, instead of running the machines,
+	print the instructions set of if M1 then M2 else M3
 
 tm -b (busy beaver)
 	generate all machines of the given complexity
@@ -30,7 +37,7 @@ tm -N (numbers)
 	interpret the number tape, as in 0111101110 => 3 2
 
 tm -r (resources)
-	after halting (or upon receivinf SIGINFO)
+	after halting (or upon receiving SIGINFO)
 	report the number of steps taken and memory (tape) used
 
 tm -s (steps)

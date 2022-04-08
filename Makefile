@@ -1,7 +1,7 @@
 PREFIX	= $(HOME)
 BINDIR	= $(PREFIX)/bin
 MANDIR	= $(PREFIX)/man/man1
-CFLAGS	= -Wall -pedantic
+CFLAGS	= -Wall -pedantic -D_OPENBSD_SOURCE
 
 all: tm
 tm: tm.c tm.h

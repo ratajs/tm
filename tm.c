@@ -309,7 +309,7 @@ chktape(struct tm *tm, char m)
 	off = tm->head - tm->tape;
 	if ((m == 'L' && off == 0)
 	||  (m == 'R' && (off == tm->tlen - 1))) {
-		if (NULL == (newt = recallocarray(tm->tape, tm->tlen, newl, 1)))
+		if (NULL == (newt = reallocarray(tm->tape, newl, 1)))
 			err(1, NULL);
 		if (m == 'R') {
 			tm->tape = newt;

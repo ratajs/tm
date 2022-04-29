@@ -164,7 +164,6 @@ prtape(struct tm *tm)
 					printf("\033[1m%c\033[22m", *c);
 				else
 					printf("%c%c%c", *c, 0x08, *c);
-
 			} else {
 				putchar(*c);
 			}

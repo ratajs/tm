@@ -24,9 +24,6 @@ tm -C (conditionals)
 	with tm -C M1 M2 M3, instead of running the machines,
 	print the instructions set of if M1 then M2 else M3
 
-tm -b (busy beaver)
-	generate all machines of the given complexity
-
 tm -p (projection)
 	generate the projection machine (pi_i^k)
 

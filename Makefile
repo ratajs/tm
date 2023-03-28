@@ -3,9 +3,16 @@ BINDIR	= $(PREFIX)/bin
 MANDIR	= $(PREFIX)/man/man1
 CFLAGS	= -Wall -pedantic -D_OPENBSD_SOURCE
 
-all: tm
+BINS	= tm bb
+MANS	= tm.1 bb.1
+
+all: $(BINS)
+
 tm: tm.c tm.h
 	$(CC) $(CFLAGS) -o tm tm.c
+
+bb: bb.c
+	$(CC) $(CFLAGS) -o bb bb.c
 
 test: tm
 	#./tm add.tm   < add.in   | diff - add.out
@@ -18,16 +25,16 @@ test: tm
 	./tm bb1.tm   < bb1.in   | diff - bb1.out
 	./tm bb2.tm   < bb2.in   | diff - bb2.out
 
-lint: tm.1
-	mandoc -Tlint -Wstyle tm.1
+lint: $(MANS)
+	mandoc -Tlint -Wstyle $(MANS)
 
-install: test tm.1
-	install -d -m 755 $(BINDIR) && install -m 755 tm   $(BINDIR)
-	install -d -m 755 $(MANDIR) && install -m 644 tm.1 $(MANDIR)
+install: $(BINS) $(MANS) test
+	install -d -m 755 $(BINDIR) && install -m 755 $(BINS) $(BINDIR)
+	install -d -m 755 $(MANDIR) && install -m 644 $(MANS) $(MANDIR)
 
 uninstall:
-	rm -f $(BINDIR)/tm
-	rm -f $(MANDIR)/tm.1
+	( cd $(BINDIR) && rm -f -- $(BINS) )
+	( cd $(MANDIR) && rm -f -- $(MANS) )
 
 clean:
-	rm -f tm *.o *.core *~
+	rm -f -- $(BINS) *.o *.core *~

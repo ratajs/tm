@@ -3,6 +3,9 @@ empty tape
 
 support comments in the inst: A11RA % walk over the ones
 
+incorporate bb(1) into tm(1) as tm -B
+for easier running without having to fork.
+
 The mult.tm machine only multiplies by zero.
 Employ the copy machine to do non-zero products.
 

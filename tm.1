@@ -7,6 +7,7 @@
 .Sh SYNOPSIS
 .Nm
 .Op Fl b Ar blank
+.Op Fl s Ar steps
 .Op Fl qtT
 .Ar machine
 .Sh DESCRIPTION
@@ -79,7 +80,7 @@ until the input is exhausted.
 .Pp
 The options are as follows:
 .Pp
-.Bl -tag -width xxxx -compact
+.Bl -tag -width xxxxxxxx -compact
 .It Fl b Ar X
 Consider
 .Sq X
@@ -87,6 +88,8 @@ to be the blank symbol instead of the default
 .Sq 0 .
 .It Fl q
 Do not print the content of the tape upon halting.
+.It Fl s Ar steps
+Halt the machine after this this many steps.
 .It Fl t
 Display the tape before every step of the machine.
 .It Fl T

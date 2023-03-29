@@ -24,4 +24,5 @@ struct tm {
 	size_t		tlen;
 	char*		tape;
 	char*		head;
+	uint64_t	step;
 };

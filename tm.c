@@ -8,13 +8,14 @@
 
 char	blank = '0';
 int	qflag = 0;
+long	sflag = 0;
 int	tflag = 0;
 int	Tflag = 0;
 
 static void
 usage()
 {
-	fprintf(stderr, "usage: tm [-b blank] [-qtT] machine\n");
+	fprintf(stderr, "usage: tm [-b blank] [-s steps] [-qtT] machine\n");
 }
 
 struct inst*
@@ -335,6 +336,10 @@ run(struct tm *tm)
 	do {
 		if (tflag)
 			prtape(tm);
+		if (++tm->step == sflag) {
+			warnx("Halting after %llu steps", tm->step);
+			break;
+		}
 		if (tm->s == NULL
 		|| ((i = getinst(tm->s->inst, *tm->head)) == NULL)) {
 			/* halt */
@@ -362,8 +367,9 @@ main(int argc, char** argv)
 	ssize_t len = 0;
 	size_t size = 0;
 	char *line = NULL;
+	const char *e = NULL;
 
-	while ((c = getopt(argc, argv, "b:qtT")) != -1) switch (c) {
+	while ((c = getopt(argc, argv, "b:qs:S:tT")) != -1) switch (c) {
 		case 'b':
 			if (!isalnum(blank = *optarg)) {
 				warnx("'%c' is not a valid blank", blank);
@@ -372,6 +378,11 @@ main(int argc, char** argv)
 			break;
 		case 'q':
 			qflag = 1;
+			break;
+		case 's':
+			sflag = strtonum(optarg, 0, 1 << 16, &e);
+			if (e)
+				errx(1, "%s is %s", optarg, e);
 			break;
 		case 't':
 			tflag = 1;

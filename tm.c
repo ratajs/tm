@@ -8,7 +8,7 @@
 
 char	blank = '0';
 int	qflag = 0;
-long	sflag = 0;
+long	steps = 0;
 int	tflag = 0;
 int	Tflag = 0;
 
@@ -336,7 +336,7 @@ run(struct tm *tm)
 	do {
 		if (tflag)
 			prtape(tm);
-		if (++tm->step == sflag) {
+		if (++tm->step == steps) {
 			warnx("Halting after %llu steps", tm->step);
 			break;
 		}
@@ -380,7 +380,7 @@ main(int argc, char** argv)
 			qflag = 1;
 			break;
 		case 's':
-			sflag = strtonum(optarg, 0, 1 << 16, &e);
+			steps = strtonum(optarg, 0, 1 << 16, &e);
 			if (e)
 				errx(1, "%s is %s", optarg, e);
 			break;

@@ -22,6 +22,7 @@ test: tm
 	./tm bb1.tm   < bb1.in   | diff - bb1.out
 	./tm bb2.tm   < bb2.in   | diff - bb2.out
 	./tm bb3.tm   < bb3.in   | diff - bb3.out
+	./tm bb4.tm   < bb4.in   | diff - bb4.out
 
 lint: $(MANS)
 	mandoc -Tlint -Wstyle $(MANS)

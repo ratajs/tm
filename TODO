@@ -1,3 +1,6 @@
+normalize machines:
+	strip unreachable states etc
+
 references:
 	Turing, Rado
 

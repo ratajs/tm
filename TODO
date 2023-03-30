@@ -1,6 +1,12 @@
 references:
 	Turing, Rado
 
+BB:
+	Some of the machines are mutualy isomorphic,
+	i.e. the states are just named differentlt;
+	is it cheaper to rule out these iso copies,
+	or to just run everything including the copies?
+
 empty tape
 	if no input is given, make up a small empty tape
 

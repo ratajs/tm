@@ -3,16 +3,13 @@ BINDIR	= $(PREFIX)/bin
 MANDIR	= $(PREFIX)/man/man1
 CFLAGS	= -Wall -pedantic -D_OPENBSD_SOURCE
 
-BINS	= tm bb
-MANS	= tm.1 bb.1
+BINS	= tm
+MANS	= tm.1
 
 all: $(BINS)
 
 tm: tm.c tm.h
 	$(CC) $(CFLAGS) -o tm tm.c
-
-bb: bb.c
-	$(CC) $(CFLAGS) -o bb bb.c
 
 test: tm
 	#./tm add.tm   < add.in   | diff - add.out

@@ -9,13 +9,15 @@
 char	blank = '0';
 int	qflag = 0;
 long	steps = 0;
+int	nbusy = 0;
 int	tflag = 0;
 int	Tflag = 0;
 
 static void
 usage()
 {
-	fprintf(stderr, "usage: tm [-b blank] [-s steps] [-qtT] machine\n");
+	fprintf(stderr,
+		"usage: tm [-B num] [-b blank] [-s steps] [-qtT] machine\n");
 }
 
 struct inst*
@@ -191,11 +193,14 @@ mktape(struct tm *tm, char* line)
 	size_t len = 0;
 	if (tm == NULL)
 		return -1;
-	if (line == NULL || *line == '\n' || *line == 0)
+	if (line == NULL || *line == '\n' || *line == '\0')
 		return 0;
 	for (c = line, len = 0; c; c++, len++) {
+		if (*c == '\0') {
+			break;
+		}
 		if (*c == '\n') {
-			*c = 0;
+			*c = '\0';
 			break;
 		}
 		if (!isalnum(*c)) {
@@ -292,6 +297,7 @@ reset(struct tm* tm)
 	tm->s = tm->list;
 	tm->tape = NULL;
 	tm->tlen = 0;
+	tm->step = 0;
 }
 
 /* Check if a move would take us past the end of the tape.
@@ -327,6 +333,22 @@ chktape(struct tm *tm, char m)
 	return;
 }
 
+long
+ones(struct tm *tm)
+{
+	char *c;
+	size_t l;
+	long num = 0;
+	if (tm->step == steps) {
+		/* Must halt. */
+		return 0;
+	}
+	for (l = 0, c = tm->tape; *c && l < tm->tlen; c++, l++)
+		if (*c == '1')
+			num++;
+	return num;
+}
+
 int
 run(struct tm *tm)
 {
@@ -337,7 +359,8 @@ run(struct tm *tm)
 		if (tflag)
 			prtape(tm);
 		if (++tm->step == steps) {
-			warnx("Halting after %llu steps", tm->step);
+			if (!qflag)
+				warnx("Halting after %llu steps", tm->step);
 			break;
 		}
 		if (tm->s == NULL
@@ -360,6 +383,107 @@ run(struct tm *tm)
 }
 
 int
+nexti(struct inst *i, struct tm *tm)
+{
+	/*printf("upping %c%c%c%c\n", i->r, i->w, i->m, i->t->s);*/
+	if (i->t->s == 'Z') {
+		i->w = '0';
+		i->m = 'L';
+		i->t = tm->list->next;
+		return 1;
+	}
+	if (i->t->next) {
+		i->t = i->t->next;
+		return 1;
+	}
+	if (i->m == 'L') {
+		i->m = 'N';
+		i->t = tm->list->next;
+		return 1;
+	}
+	if (i->m == 'N') {
+		i->m = 'R';
+		i->t = tm->list->next;
+		return 1;
+	}
+	if (i->w == '0') {
+		i->w = '1';
+		i->m = 'L';
+		i->t = tm->list->next;
+		return 1;
+	}
+	return 0;
+}
+
+int
+nexts(struct state *s, struct tm *tm)
+{
+	struct inst *i;
+	for (i = s->inst; i ; i = i->next) {
+		/*printf("upping r:%c\n", i->r);*/
+		if (nexti(i, tm))
+			return 1;
+		i->w = i->r;
+		i->m = 'N';
+		i->t = tm->list;
+	}
+	return 0;
+}
+
+int
+nextm(struct tm *tm)
+{
+	struct inst *i;
+	struct state *s;
+	for (s = tm->list->next; s ; s = s->next) {
+		/*printf("upping s:%c\n", s->s);*/
+		if (nexts(s, tm))
+			return 1;
+		for (i = s->inst; i; i = i->next) {
+			i->w = i->r;
+			i->m = 'N';
+			i->t = tm->list;
+		}
+	}
+	return 0;
+}
+
+void
+bb(int states)
+{
+	int s;
+	long max = 0;
+	long num = 0;
+	struct tm *tm;
+	char* tape = "00000000";
+
+	if ((tm = calloc(1, sizeof(struct tm))) == NULL)
+		err(1, NULL);
+
+	/* Add the halt state as first and
+	 * start with noop for all states. */
+	addstat(tm, mkstat('Z'));
+	for (s = 0; s < states; s++) {
+		add(tm, 'A' + s, '0', '0', 'N', 'Z');
+		add(tm, 'A' + s, '1', '1', 'N', 'Z');
+	}
+
+	do {
+		reset(tm);
+		mktape(tm, tape);
+		tm->s = tm->list->next;
+		run(tm);
+
+		if ((num = ones(tm)) > max) {
+			/* FIXME: save the machine in bbN.tm */
+			printf("new max %ld > %ld\n", num, max);
+			max = num;
+			prtm(tm);
+		}
+	} while (nextm(tm));
+}
+
+int
 main(int argc, char** argv)
 {
 	int c;
@@ -369,7 +493,12 @@ main(int argc, char** argv)
 	char *line = NULL;
 	const char *e = NULL;
 
-	while ((c = getopt(argc, argv, "b:qs:S:tT")) != -1) switch (c) {
+	while ((c = getopt(argc, argv, "B:b:qs:S:tT")) != -1) switch (c) {
+		case 'B':
+			nbusy = strtonum(optarg, 1, 10, &e);
+			if (e)
+				errx(1, "%s is %s", optarg, e);
+			break;
 		case 'b':
 			if (!isalnum(blank = *optarg)) {
 				warnx("'%c' is not a valid blank", blank);
@@ -398,6 +527,11 @@ main(int argc, char** argv)
 	argc -= optind;
 	argv += optind;
 
+	if (nbusy) {
+		bb(nbusy);
+		return 0;
+	}
+
 	if (argc != 1) {
 		usage();
 		return -1;
@@ -414,7 +548,7 @@ main(int argc, char** argv)
 				warnx("invalid tape: %s", line);
 				break;
 			case 0:
-				/* empty */
+				/* no tape; do not run. */
 				break;
 			default:
 				run(tm);

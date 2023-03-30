@@ -1,4 +1,4 @@
-.Dd April 8, 2021
+.Dd March 30, 2023
 .Dt TM 1
 .Os
 .Sh NAME
@@ -81,6 +81,10 @@ until the input is exhausted.
 The options are as follows:
 .Pp
 .Bl -tag -width xxxxxxxx -compact
+.It Fl B Ar num
+Run the busy beaver competition for machines having
+.Ar num
+states.
 .It Fl b Ar X
 Consider
 .Sq X
@@ -112,3 +116,18 @@ for machines with two active states.
 .Dl $ echo 000000 | tm -T bb2.tm | a2ps
 .Sh AUTHORS
 .An Jan Stary Aq Mt hans@stare.cz
+.Sh CAVEATS
+.Nm
+.Fl B Ar num
+generates the Turing machines having
+.Ar num
+states and runs them on an empty tape,
+reporting the machine that said the biggest number.
+Obviously, that is impossible to implement,
+as the number of steps a machine with
+.Ar num
+states could take grows faster than any computable function.
+The only way to make this work, for small numbers at least,
+is to artificially limit the running time with the
+.Fl s
+option, thus solving the halting problem.

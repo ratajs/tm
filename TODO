@@ -5,6 +5,9 @@ references:
 	Turing, Rado
 
 BB:
+	fork up to the number of cpus;
+	not that it would really help of course :-)
+BB:
 	Some of the machines are mutualy isomorphic,
 	i.e. the states are just named differentlt;
 	is it cheaper to rule out these iso copies,

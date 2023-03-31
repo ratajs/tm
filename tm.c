@@ -358,7 +358,7 @@ run(struct tm *tm)
 	do {
 		if (tflag)
 			prtape(tm);
-		if (++tm->step == steps) {
+		if (tm->step == steps) {
 			if (!qflag)
 				warnx("Halting after %llu steps", tm->step);
 			break;
@@ -376,6 +376,7 @@ run(struct tm *tm)
 		} else if (i->m == 'R') {
 			tm->head++;
 		}
+		tm->step++;
 	} while (1);
 	if (!tflag && !qflag)
 		prtape(tm);
@@ -452,6 +453,7 @@ void
 bb(int states)
 {
 	int s;
+	long min = 0;
 	long max = 0;
 	long num = 0;
 	struct tm *tm;
@@ -474,10 +476,12 @@ bb(int states)
 		tm->s = tm->list->next;
 		run(tm);
 
-		if ((num = ones(tm)) > max) {
-			/* FIXME: save the machine in bbN.tm */
-			printf("new max %ld > %ld\n", num, max);
+		if (((num = ones(tm)) > max)
+		|| (num == max && tm->step < min)) {
 			max = num;
+			min = tm->step;
+			printf("new best: %ld in %ld steps\n", max, min);
+			/* FIXME: save the machine in bbN.tm */
 			prtm(tm);
 		}
 	} while (nextm(tm));

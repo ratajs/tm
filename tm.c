@@ -358,7 +358,7 @@ run(struct tm *tm)
 	do {
 		if (tflag)
 			prtape(tm);
-		if (tm->step == steps) {
+		if (steps && tm->step == steps) {
 			if (!qflag)
 				warnx("Halting after %llu steps", tm->step);
 			break;

@@ -17,7 +17,7 @@ static void
 usage()
 {
 	fprintf(stderr,
-		"usage: tm [-b blank] [-s steps] [-qtT] machine\n",
+		"usage: tm [-b blank] [-s steps] [-qtT] machine\n"
 		"usage: tm -B num [-s steps] [-qtT]\n");
 }
 

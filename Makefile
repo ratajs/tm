@@ -16,7 +16,7 @@ test: tm
 	#./tm max.tm   < max.in   | diff - max.out
 	./tm sign.tm  < sign.in  | diff - sign.out
 	./tm succ.tm  < succ.in  | diff - succ.out
-	./tm copy1.tm  < copy1.in  | diff - copy1.out
+	./tm proj11.tm  < proj11.in  | diff - proj11.out
 	#./tm proj23.tm  < proj23.in  | diff - proj23.out
 	./tm empty.tm < empty.in | diff - empty.out
 	./tm bb1.tm   < bb1.in   | diff - bb1.out

@@ -14,15 +14,15 @@ tm: tm.c tm.h
 test: tm
 	#./tm add.tm   < add.in   | diff - add.out
 	#./tm max.tm   < max.in   | diff - max.out
-	./tm sign.tm  < sign.in  | diff - sign.out
-	./tm succ.tm  < succ.in  | diff - succ.out
-	./tm proj11.tm  < proj11.in  | diff - proj11.out
-	#./tm proj23.tm  < proj23.in  | diff - proj23.out
-	./tm empty.tm < empty.in | diff - empty.out
-	./tm bb1.tm   < bb1.in   | diff - bb1.out
-	./tm bb2.tm   < bb2.in   | diff - bb2.out
-	./tm bb3.tm   < bb3.in   | diff - bb3.out
-	./tm bb4.tm   < bb4.in   | diff - bb4.out
+	./tm sign.tm   < sign.in   | diff - sign.out
+	./tm succ.tm   < succ.in   | diff - succ.out
+	./tm empty.tm  < empty.in  | diff - empty.out
+	./tm proj11.tm < proj11.in | diff - proj11.out
+	./tm proj12.tm < proj12.in | diff - proj12.out
+	./tm bb1.tm    < bb1.in    | diff - bb1.out
+	./tm bb2.tm    < bb2.in    | diff - bb2.out
+	./tm bb3.tm    < bb3.in    | diff - bb3.out
+	./tm bb4.tm    < bb4.in    | diff - bb4.out
 
 lint: $(MANS)
 	mandoc -Tlint -Wstyle $(MANS)

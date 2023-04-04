@@ -12,8 +12,8 @@ tm: tm.c tm.h
 	$(CC) $(CFLAGS) -o tm tm.c
 
 test: tm
-	#./tm add.tm   < add.in   | diff - add.out
 	#./tm max.tm   < max.in   | diff - max.out
+	./tm add.tm    < add.in    | diff - add.out
 	./tm sign.tm   < sign.in   | diff - sign.out
 	./tm succ.tm   < succ.in   | diff - succ.out
 	./tm empty.tm  < empty.in  | diff - empty.out

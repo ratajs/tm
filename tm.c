@@ -204,7 +204,7 @@ mktape(struct tm *tm, char* line)
 			*c = '\0';
 			break;
 		}
-		if (!isalnum(*c)) {
+		if (!isprint(*c)) {
 			warnx("'%c' is not a valid tape symbol", *c);
 			return -1;
 		}
@@ -255,15 +255,15 @@ mktm(const char* file)
 	if ((tm = calloc(1, sizeof(struct tm))) == NULL)
 		err(1, NULL);
 	while (fscanf(f, "%c%c%c%c%c\n", &s, &r, &w, &m, &t) == 5) {
-		if (!(isalnum(s))) {
+		if (!(isprint(s))) {
 			warnx("'%c' is not a valid state name", s);
 			goto bad;
 		}
-		if (!(isalnum(r))) {
+		if (!(isprint(r))) {
 			warnx("'%c' is not a valid tape symbol", r);
 			goto bad;
 		}
-		if (!(isalnum(w))) {
+		if (!(isprint(w))) {
 			warnx("'%c' is not a valid tape symbol", w);
 			goto bad;
 		}
@@ -271,7 +271,7 @@ mktm(const char* file)
 			warnx("'%c' is not a valid move", m);
 			goto bad;
 		}
-		if (!(isalnum(t))) {
+		if (!(isprint(t))) {
 			warnx("'%c' is not a valid state name", t);
 			goto bad;
 		}
@@ -505,7 +505,7 @@ main(int argc, char** argv)
 				errx(1, "%s is %s", optarg, e);
 			break;
 		case 'b':
-			if (!isalnum(blank = *optarg)) {
+			if (!isprint(blank = *optarg)) {
 				warnx("'%c' is not a valid blank", blank);
 				return -1;
 			}

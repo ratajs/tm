@@ -19,10 +19,13 @@ test: tm
 	./tm empty.tm  < empty.in  | diff - empty.out
 	./tm proj11.tm < proj11.in | diff - proj11.out
 	./tm proj12.tm < proj12.in | diff - proj12.out
+
 	./tm bb1.tm    < bb1.in    | diff - bb1.out
 	./tm bb2.tm    < bb2.in    | diff - bb2.out
 	./tm bb3.tm    < bb3.in    | diff - bb3.out
 	./tm bb4.tm    < bb4.in    | diff - bb4.out
+
+	./tm -b _ abcbin.tm < abcbin.in | diff - abcbin.out
 
 lint: $(MANS)
 	mandoc -Tlint -Wstyle $(MANS)

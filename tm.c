@@ -321,11 +321,11 @@ chktape(struct tm *tm, char m)
 		if (m == 'R') {
 			tm->tape = newt;
 			tm->head = newt + off;
-			memset(tm->head + 1, '0', tm->tlen);
+			memset(tm->head + 1, blank, tm->tlen);
 			tm->tlen = newl;
 		} else {
 			memcpy(newt + tm->tlen, newt, tm->tlen);
-			memset(newt, '0', tm->tlen);
+			memset(newt, blank, tm->tlen);
 			tm->head = newt + tm->tlen;
 			tm->tape = newt;
 			tm->tlen = newl;

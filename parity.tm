@@ -1,0 +1,11 @@
+E11LO
+E00Re
+O11LE
+O00Ro
+e11Re
+e00Rx
+x01Ry
+y01NZ
+o11Ro
+o00Rp
+p01NZ

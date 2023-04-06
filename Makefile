@@ -16,8 +16,8 @@ test: tm
 	./tm add.tm    < add.in    | diff - add.out
 	./tm sign.tm   < sign.in   | diff - sign.out
 	./tm succ.tm   < succ.in   | diff - succ.out
+	./tm copy.tm   < copy.in   | diff - copy.out
 	./tm empty.tm  < empty.in  | diff - empty.out
-	./tm proj11.tm < proj11.in | diff - proj11.out
 	./tm proj12.tm < proj12.in | diff - proj12.out
 
 	./tm bb1.tm    < bb1.in    | diff - bb1.out

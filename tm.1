@@ -39,7 +39,7 @@ for right,
 .Sq N
 for nothing
 .Pc .
-The tape symbols and state names must be alphanumeric characters.
+The tape symbols and state names must be printable characters.
 Every line describes an instruction:
 in a state
 .Ic s ,
@@ -66,12 +66,12 @@ state and
 input.
 .Pp
 The initial tape content is given by a line of standard input.
-The line may only contain alphanumeric characters.
+The line may only contain printable characters.
 By default,
 .Sq 0
 is considered the blank symbol.
 The machine head is initially positioned at
-the last non-blank symbol on the tape, if any.
+the first non-blank symbol on the tape, if any.
 Otherwise, the head is positioned in the middle of the tape.
 If and when the machine halts,
 .Nm

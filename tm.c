@@ -165,9 +165,9 @@ prtape(struct tm *tm)
 		for (c = tm->tape; c && *c; c++) {
 			if (c == tm->head) {
 				if (isatty(1))
-					printf("\033[1m%c\033[22m", *c);
+					printf("\033[4m%c\033[24m", *c);
 				else
-					printf("%c%c%c", *c, 0x08, *c);
+					printf("%c%c%c", *c, '\b', *c);
 			} else {
 				putchar(*c);
 			}
@@ -184,7 +184,7 @@ prtape(struct tm *tm)
 }
 
 /* Given an input line, prepare the tape.
- * Point the head to the last non-blank (if any).
+ * Point the head to the first non-blank (if any).
  * Return tape length for success, 0 for empty line, -1 for error. */
 int
 mktape(struct tm *tm, char* line)
@@ -208,7 +208,7 @@ mktape(struct tm *tm, char* line)
 			warnx("'%c' is not a valid tape symbol", *c);
 			return -1;
 		}
-		if (*c != blank)
+		if (h == NULL && *c != blank)
 			h = c;
 	}
 	tm->tape = strdup(line);

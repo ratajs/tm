@@ -14,7 +14,7 @@ int	tflag = 0;
 int	Tflag = 0;
 
 static void
-usage()
+usage(void)
 {
 	fprintf(stderr,
 		"usage: tm [-b blank] [-s steps] [-qtT] machine\n"

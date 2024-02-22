@@ -25,7 +25,7 @@ struct inst*
 mkinst(char R, char W, char M, struct state *t)
 {
 	struct inst *i = NULL;
-	if (t == NULL) {
+	if (W && t == NULL) {
 		warn("jump state missing");
 		return NULL;
 	}
@@ -45,7 +45,7 @@ getinst(struct inst *list, char R)
 	if (list == NULL)
 		return NULL;
 	for (i = list; i; i = i->next)
-		if (i->r == R)
+		if (i->r == R && i->w)
 			return i;
 	return NULL;
 }
@@ -71,8 +71,14 @@ prstat(struct state *s)
 	struct inst *i;
 	if (s == NULL)
 		return;
-	for (i = s->inst; i; i = i->next)
-		printf("%c%c%c%c%c\n", s->s, i->r, i->w, i->m, i->t->s);
+	for (i = s->inst; i; i = i->next) {
+		if (i->w)
+			printf("%c%c%c%c%c\n", s->s, i->r, i->w, i->m, i->t->s);
+		/*
+		else
+			printf("%c%cnop\n", s->s, i->r);
+		*/
+	}
 }
 
 struct state*
@@ -132,7 +138,8 @@ int
 add(struct tm* tm, char S, char R, char W, char M, char T)
 {
 	struct inst  *i;
-	struct state *s, *t;
+	struct state *s;
+	struct state *t = NULL;
 	if (tm == NULL)
 		return -1;
 	if ((s = getstat(tm->list, S))) {
@@ -146,7 +153,7 @@ add(struct tm* tm, char S, char R, char W, char M, char T)
 		s = mkstat(S);
 		addstat(tm, s);
 	}
-	if ((t = getstat(tm->list, T)) == NULL) {
+	if (T && (t = getstat(tm->list, T)) == NULL) {
 		t = mkstat(T);
 		addstat(tm, t);
 	}
@@ -180,7 +187,6 @@ prtape(struct tm *tm)
 	} else {
 		printf("%s\n", tm->tape);
 	}
-		
 }
 
 /* Given an input line, prepare the tape.
@@ -387,31 +393,34 @@ run(struct tm *tm)
 int
 nexti(struct inst *i, struct tm *tm)
 {
-	/*printf("upping %c%c%c%c\n", i->r, i->w, i->m, i->t->s);*/
-	if (i->t->s == 'Z') {
+	if (i == NULL)
+		return 0;
+	if (i->w == 0) {
+		/*printf("upping NOP\n");*/
 		i->w = '0';
 		i->m = 'L';
-		i->t = tm->list->next;
+		i->t = tm->list;
 		return 1;
 	}
+	/*printf("upping %c%c%c\n", i->w, i->m, i->t->s);*/
 	if (i->t->next) {
 		i->t = i->t->next;
 		return 1;
 	}
 	if (i->m == 'L') {
 		i->m = 'N';
-		i->t = tm->list->next;
+		i->t = tm->list;
 		return 1;
 	}
 	if (i->m == 'N') {
 		i->m = 'R';
-		i->t = tm->list->next;
+		i->t = tm->list;
 		return 1;
 	}
 	if (i->w == '0') {
 		i->w = '1';
 		i->m = 'L';
-		i->t = tm->list->next;
+		i->t = tm->list;
 		return 1;
 	}
 	return 0;
@@ -421,13 +430,14 @@ int
 nexts(struct state *s, struct tm *tm)
 {
 	struct inst *i;
+	/*printf("upping state '%c'\n", s->s);*/
 	for (i = s->inst; i ; i = i->next) {
-		/*printf("upping r:%c\n", i->r);*/
+		/*printf("upping for r = '%c'\n", i->r);*/
 		if (nexti(i, tm))
 			return 1;
-		i->w = i->r;
-		i->m = 'N';
-		i->t = tm->list;
+		i->w = 0;
+		i->m = 0;
+		i->t = 0;
 	}
 	return 0;
 }
@@ -437,14 +447,13 @@ nextm(struct tm *tm)
 {
 	struct inst *i;
 	struct state *s;
-	for (s = tm->list->next; s ; s = s->next) {
-		/*printf("upping s:%c\n", s->s);*/
+	for (s = tm->list; s ; s = s->next) {
 		if (nexts(s, tm))
 			return 1;
 		for (i = s->inst; i; i = i->next) {
-			i->w = i->r;
-			i->m = 'N';
-			i->t = tm->list;
+			i->w = 0;
+			i->m = 0;
+			i->t = 0;
 		}
 	}
 	return 0;
@@ -463,18 +472,16 @@ bb(int states)
 	if ((tm = calloc(1, sizeof(struct tm))) == NULL)
 		err(1, NULL);
 
-	/* Add the halt state as first and
-	 * start with noop for all states. */
-	addstat(tm, mkstat('Z'));
 	for (s = 0; s < states; s++) {
-		add(tm, 'A' + s, '0', '0', 'N', 'Z');
-		add(tm, 'A' + s, '1', '1', 'N', 'Z');
+		/* Having (s,r) -> (0, 0, 0) means NOOP */
+		add(tm, 'A' + s, '0', 0, 0, 0);
+		add(tm, 'A' + s, '1', 0, 0, 0);
 	}
 
 	do {
 		reset(tm);
 		mktape(tm, tape);
-		tm->s = tm->list->next;
+		tm->s = tm->list;
 		run(tm);
 
 		if (((num = ones(tm)) > max)

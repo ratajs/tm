@@ -190,8 +190,8 @@ prtape(struct tm *tm)
 }
 
 /* Given an input line, prepare the tape.
- * Point the head to the first non-blank (if any).
- * Return tape length for success, 0 for empty line, -1 for error. */
+ * Point the head to the first non-blank (if any), or in the middle.
+ * Return tape length for success, 0 for an empty tape, -1 for error. */
 int
 mktape(struct tm *tm, char* line)
 {
@@ -202,10 +202,9 @@ mktape(struct tm *tm, char* line)
 		return -1;
 	if (line == NULL || *line == '\n' || *line == '\0')
 		return 0;
-	for (c = line, len = 0; c; c++, len++) {
-		if (*c == '\0') {
+	for (c = line, len = 0; c && *c; c++, len++) {
+		if (*c == '\0')
 			break;
-		}
 		if (*c == '\n') {
 			*c = '\0';
 			break;
@@ -218,7 +217,7 @@ mktape(struct tm *tm, char* line)
 			h = c;
 	}
 	tm->tape = strdup(line);
-	tm->head = h ? tm->tape + (h - line) : tm->tape + len/2;
+	tm->head = tm->tape + (h ? (h - line) : len/2);
 	tm->tlen = len;
 	return len;
 }
@@ -307,11 +306,11 @@ reset(struct tm* tm)
 	tm->step = 0;
 }
 
-/* Check if a move would take us past the end of the tape.
- * If so, double the tape size in that direction,
- * keep the tape content and reposition. */
+/* If a move would take us past the end of the tape,
+ * double the tape size in that direction, keep the content,
+ * and reposition the head accordingly. */
 void
-chktape(struct tm *tm, char m)
+cktape(struct tm *tm, char m)
 {
 	char *newt;
 	size_t newl;
@@ -322,7 +321,9 @@ chktape(struct tm *tm, char m)
 	off = tm->head - tm->tape;
 	if ((m == 'L' && off == 0)
 	||  (m == 'R' && (off == tm->tlen - 1))) {
-		if (NULL == (newt = realloc(tm->tape, newl)))
+		/* FIXME: this does not terminate with \0
+		 * Or do we break that with the memset()? */
+		if (NULL == (newt = realloc(tm->tape, 1+newl)))
 			err(1, NULL);
 		if (m == 'R') {
 			tm->tape = newt;
@@ -336,8 +337,8 @@ chktape(struct tm *tm, char m)
 			tm->tape = newt;
 			tm->tlen = newl;
 		}
+		tm->tape[tm->tlen] = '\0';
 	}
-	return;
 }
 
 long
@@ -377,7 +378,7 @@ run(struct tm *tm)
 		}
 		tm->s = i->t;
 		*tm->head = i->w;
-		chktape(tm, i->m);
+		cktape(tm, i->m);
 		if (i->m == 'L') {
 			tm->head--;
 		} else if (i->m == 'R') {

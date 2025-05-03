@@ -19,6 +19,8 @@ test: tm
 	./tm empty.tm  < empty.in  | diff - empty.out
 	./tm proj23.tm < proj23.in | diff - proj23.out
 	./tm mul.tm    < mul.in    | diff - mul.out
+	./tm max2.tm   < max2.in   | diff - max2.out
+	./tm min2.tm   < min2.in   | diff - min2.out
 
 	./tm bb1.tm    < bb1.in    | diff - bb1.out
 	./tm bb2.tm    < bb2.in    | diff - bb2.out

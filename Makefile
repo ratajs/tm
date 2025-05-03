@@ -18,6 +18,7 @@ test: tm
 	./tm copy.tm   < copy.in   | diff - copy.out
 	./tm empty.tm  < empty.in  | diff - empty.out
 	./tm proj23.tm < proj23.in | diff - proj23.out
+	./tm mul.tm    < mul.in    | diff - mul.out
 
 	./tm bb1.tm    < bb1.in    | diff - bb1.out
 	./tm bb2.tm    < bb2.in    | diff - bb2.out
